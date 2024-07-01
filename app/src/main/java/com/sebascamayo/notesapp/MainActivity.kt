@@ -16,9 +16,11 @@ import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_not
 import com.sebascamayo.notesapp.features.feature_notes.presentation.util.Screen
 import com.sebascamayo.notesapp.ui.theme.NotesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint //Nos permite inyectar nuestros ViewModel
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

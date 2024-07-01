@@ -39,7 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
-import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.components.TransparentHintTextField
+import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.components.TransparentHintTextFieldTitle
+import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.components.TransparentHintTextFieldTitleContent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -137,7 +138,7 @@ fun AddEditNoteScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 //Text
-                TransparentHintTextField(
+                TransparentHintTextFieldTitle(
                     text = titleState.text,
                     hint = titleState.hint,
                     onValueChange = {
@@ -153,7 +154,7 @@ fun AddEditNoteScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider(color = Color.Black, thickness = 1.dp)
                 Spacer(modifier = Modifier.height(16.dp))
-                TransparentHintTextField(
+                TransparentHintTextFieldTitleContent(
                     text = contentState.text,
                     hint = contentState.hint,
                     onValueChange = {

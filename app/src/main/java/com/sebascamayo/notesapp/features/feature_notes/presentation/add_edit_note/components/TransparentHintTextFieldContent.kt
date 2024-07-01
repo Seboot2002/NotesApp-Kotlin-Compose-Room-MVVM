@@ -1,6 +1,7 @@
 package com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
@@ -13,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TransparentHintTextFieldTitle(
+fun TransparentHintTextFieldTitleContent(
     text: String,
     hint: String,
     modifier: Modifier = Modifier,
@@ -36,6 +37,7 @@ fun TransparentHintTextFieldTitle(
                 .onFocusChanged {
                     onFocusChange(it)
                 }
+                .fillMaxHeight()
         )
         if (isHintInvisible) {
             Text(text = hint, style = textStyle, color = Color.DarkGray)

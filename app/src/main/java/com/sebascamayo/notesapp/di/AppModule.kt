@@ -1,21 +1,26 @@
 package com.sebascamayo.notesapp.di
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import com.sebascamayo.notesapp.features.feature_notes.data.datasource.local.NoteDatabase
+import com.sebascamayo.notesapp.features.feature_notes.data.datasource.remote.PhraseApiService
 import com.sebascamayo.notesapp.features.feature_notes.data.repository.NotesRepositoryImpl
+import com.sebascamayo.notesapp.features.feature_notes.data.repository.PhraseRepositoryImpl
 import com.sebascamayo.notesapp.features.feature_notes.domain.repository.NotesRepository
+import com.sebascamayo.notesapp.features.feature_notes.domain.repository.PhraseRepository
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.AddNote
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.DeleteNote
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.GetNote
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.GetNotes
+import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.GetPhrase
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.NoteUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 //La inyeccion de dependencia se usa para usar database, repositorio, uses_cases en cualquier parte del codigo
@@ -38,12 +43,18 @@ object AppModule {
         ).build()
     }
 
-
     @Provides
     @Singleton
     fun provideNoteRepository(db: NoteDatabase): NotesRepository{
 
         return NotesRepositoryImpl(db.noteDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providePhraseRepository(api: PhraseApiService): PhraseRepository{
+
+        return PhraseRepositoryImpl(api)
     }
 
     @Provides
@@ -57,5 +68,27 @@ object AppModule {
             getNote = GetNote(repository)
         )
     }
+
+    @Provides
+    @Singleton
+    fun providePhraseUseCases(repository: PhraseRepository): GetPhrase {
+
+        return GetPhrase(repository)
+    }
+
+    // RetroFit
+    @Provides
+    fun provideBaseUrl(): String = "https://frasedeldia.azurewebsites.net/api/"
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(baseUrl: String): Retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    @Provides
+    @Singleton
+    fun provideApiService(retrofit: Retrofit): PhraseApiService = retrofit.create(PhraseApiService::class.java)
 
 }
