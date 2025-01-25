@@ -1,6 +1,6 @@
 package com.sebascamayo.notesapp.features.feature_notes.domain.use_case
 
-import com.sebascamayo.notesapp.features.feature_notes.data.datasource.local.entity.InvalidNoteException
+import com.sebascamayo.notesapp.features.feature_notes.domain.model.InvalidNoteException
 import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
 import com.sebascamayo.notesapp.features.feature_notes.domain.repository.NotesRepository
 

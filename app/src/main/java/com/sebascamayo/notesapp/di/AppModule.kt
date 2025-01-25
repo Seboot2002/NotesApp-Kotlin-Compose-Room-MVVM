@@ -2,22 +2,24 @@ package com.sebascamayo.notesapp.di
 
 import android.app.Application
 import androidx.room.Room
+import com.sebascamayo.notesapp.data.preferences.PhrasePreferences
+import com.sebascamayo.notesapp.data.preferences.abstraction.DataStoreRepository
+import com.sebascamayo.notesapp.data.preferences.implementation.DataStoreRepositoryImp
 import com.sebascamayo.notesapp.features.feature_notes.data.datasource.local.NoteDatabase
-import com.sebascamayo.notesapp.features.feature_notes.data.datasource.remote.PhraseApiService
+import com.sebascamayo.notesapp.features.feature_phrase.data.datasource.remote.PhraseApiService
 import com.sebascamayo.notesapp.features.feature_notes.data.repository.NotesRepositoryImpl
-import com.sebascamayo.notesapp.features.feature_notes.data.repository.PhraseRepositoryImpl
+import com.sebascamayo.notesapp.features.feature_phrase.data.repository.PhraseRepositoryImpl
 import com.sebascamayo.notesapp.features.feature_notes.domain.repository.NotesRepository
-import com.sebascamayo.notesapp.features.feature_notes.domain.repository.PhraseRepository
+import com.sebascamayo.notesapp.features.feature_phrase.domain.repository.PhraseRepository
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.AddNote
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.DeleteNote
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.GetNote
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.GetNotes
-import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.GetPhrase
+import com.sebascamayo.notesapp.features.feature_phrase.domain.use_case.GetPhrase
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.NoteUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,6 +34,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideDataStoreRepository(app: Application): DataStoreRepository {
+        return  DataStoreRepositoryImp(app)
+    }
 
     @Provides
     @Singleton
@@ -52,7 +60,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePhraseRepository(api: PhraseApiService): PhraseRepository{
+    fun providePhraseRepository(api: PhraseApiService): PhraseRepository {
 
         return PhraseRepositoryImpl(api)
     }
@@ -71,9 +79,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePhraseUseCases(repository: PhraseRepository): GetPhrase {
+    fun providePhrasePreferences(dataStoreRepository: DataStoreRepository): PhrasePreferences {
+        return PhrasePreferences(dataStoreRepository)
+    }
 
-        return GetPhrase(repository)
+    @Provides
+    @Singleton
+    fun providePhraseUseCases(repository: PhraseRepository, preferences: PhrasePreferences): GetPhrase {
+
+        return GetPhrase(repository, preferences)
     }
 
     // RetroFit

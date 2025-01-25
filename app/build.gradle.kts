@@ -87,7 +87,7 @@ dependencies {
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0-RC")
 
-    // DaggerHilt (di)
+    // DaggerHilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
@@ -98,4 +98,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.5")
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.0")
+
+    //DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+    // optional - RxJava2 support
+    implementation("androidx.datastore:datastore-preferences-rxjava2:1.1.2")
+    // optional - RxJava3 support
+    implementation("androidx.datastore:datastore-preferences-rxjava3:1.1.2")
 }

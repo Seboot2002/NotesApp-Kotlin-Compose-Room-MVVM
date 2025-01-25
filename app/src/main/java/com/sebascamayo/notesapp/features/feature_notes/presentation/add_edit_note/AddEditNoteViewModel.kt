@@ -3,14 +3,12 @@ package com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_no
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebascamayo.notesapp.features.feature_notes.data.datasource.local.entity.InvalidNoteException
+import com.sebascamayo.notesapp.features.feature_notes.domain.model.InvalidNoteException
 import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.NoteUseCases
-import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.NoteTextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

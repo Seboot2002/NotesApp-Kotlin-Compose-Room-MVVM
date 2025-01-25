@@ -1,6 +1,5 @@
 package com.sebascamayo.notesapp.features.feature_notes.data.datasource.local
 
-import androidx.compose.ui.graphics.Color
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert

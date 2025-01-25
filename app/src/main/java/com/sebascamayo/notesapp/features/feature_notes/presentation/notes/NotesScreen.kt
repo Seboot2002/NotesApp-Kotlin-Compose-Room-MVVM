@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,14 +40,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sebascamayo.notesapp.features.feature_notes.presentation.notes.components.NoteItem
 import com.sebascamayo.notesapp.features.feature_notes.presentation.notes.components.OrderSection
-import com.sebascamayo.notesapp.features.feature_notes.presentation.notes.components.PhraseItem
-import com.sebascamayo.notesapp.features.feature_notes.presentation.phrase.PhraseViewModel
+import com.sebascamayo.notesapp.features.feature_phrase.presentation.components.PhraseItem
+import com.sebascamayo.notesapp.features.feature_phrase.presentation.PhraseViewModel
 import com.sebascamayo.notesapp.features.feature_notes.presentation.util.Screen
 import kotlinx.coroutines.launch
 
@@ -64,9 +64,8 @@ fun NotesScreen(
     val scope = rememberCoroutineScope()
 
     val statePhrase = viewModelPhrase.state.collectAsState().value
-    viewModelPhrase.onEvent()
 
-    println("GANAMOS X2: ${statePhrase}")
+    println("StatePhrase: ${statePhrase}")
 
     Scaffold(
         floatingActionButton = {
@@ -82,7 +81,7 @@ fun NotesScreen(
         snackbarHost = { SnackbarHost(scaffoldState) },
         content = { padding ->
             Box(
-                modifier = Modifier.background(Color(0xFFB9B9B9))
+                modifier = Modifier.background(Color(0xFFFFFFFF))
             ) {
                 Column(
                     modifier = Modifier
@@ -96,7 +95,8 @@ fun NotesScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Your awesome notes",
+                            text = "REFLECTIVE NOTES",
+                            fontFamily = FontFamily.SansSerif,
                             style = TextStyle(
                                 fontSize = 30.sp
                             )//MaterialTheme.typography.titleMedium
@@ -128,7 +128,7 @@ fun NotesScreen(
                     Spacer(modifier = Modifier.height(26.dp))
 
                     //Phrase
-                    PhraseItem(phrase = statePhrase.phrase, author = statePhrase.author)
+                    PhraseItem(phrase = statePhrase.phrase, author = statePhrase.author, isLoading = statePhrase.isLoading)
 
                     //Notes
                     LazyColumn(

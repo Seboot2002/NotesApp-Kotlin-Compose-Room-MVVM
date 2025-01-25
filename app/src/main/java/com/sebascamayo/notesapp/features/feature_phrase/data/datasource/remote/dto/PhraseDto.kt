@@ -1,4 +1,4 @@
-package com.sebascamayo.notesapp.features.feature_notes.data.datasource.remote.dto
+package com.sebascamayo.notesapp.features.feature_phrase.data.datasource.remote.dto
 
 // El dto es la clase en donde se almacena la data remota
 
