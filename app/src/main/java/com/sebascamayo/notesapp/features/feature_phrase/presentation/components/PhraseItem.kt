@@ -28,7 +28,7 @@ fun PhraseItem(phrase: String, author: String, isLoading: Boolean){
     ) {
         if (isLoading) {
             /*CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
+                modifier = Modifier.width(2.dp),
                 color = Color.Black,
                 trackColor = Color.Gray
             )*/

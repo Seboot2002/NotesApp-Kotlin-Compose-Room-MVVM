@@ -1,7 +1,6 @@
 package com.sebascamayo.notesapp.features.feature_notes.domain.repository
 
-import androidx.compose.ui.graphics.Color
-import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
+import com.sebascamayo.notesapp.features.feature_notes.domain.models.Note
 import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository{

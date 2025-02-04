@@ -4,14 +4,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
+import com.sebascamayo.notesapp.features.feature_notes.domain.models.Note
 import com.sebascamayo.notesapp.features.feature_notes.domain.use_case.NoteUseCases
 import com.sebascamayo.notesapp.features.feature_notes.domain.util.NoteOrder
 import com.sebascamayo.notesapp.features.feature_notes.domain.util.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 // Aqui se usa lo que se desarrolla en los use_cases
@@ -38,7 +40,7 @@ class NotesViewModel @Inject constructor(
 
                 if(state.value.noteOrder::class == event.noteOrder::class &&
                     state.value.noteOrder.orderType == event.noteOrder.orderType
-                    ){
+                ){
                     return
                 }
 
@@ -46,13 +48,18 @@ class NotesViewModel @Inject constructor(
             }
             is NotesEvent.DeleteNote -> {
                 viewModelScope.launch {// Lanzamos esta linea de codigo dentro del hilo
-                    noteUseCases.deleteNote(event.note)
-                    recentlyDeletedNote = event.note
+                    withContext(Dispatchers.IO){
+                        noteUseCases.deleteNote(event.note)
+                        recentlyDeletedNote = event.note
+                    }
                 }
             }
             is NotesEvent.RestoreNote -> {
                 viewModelScope.launch {
-                    noteUseCases.addNote(recentlyDeletedNote ?: return@launch)
+                    withContext(Dispatchers.IO) {
+                        recentlyDeletedNote?.let { noteUseCases.addNote(it) }
+                    }
+                    //noteUseCases.addNote(recentlyDeletedNote ?: return@launch)
                 }
             }
             is NotesEvent.ToogleOrderSection -> {

@@ -1,6 +1,6 @@
 package com.sebascamayo.notesapp.features.feature_notes.presentation.notes.components
 
-import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
+import com.sebascamayo.notesapp.features.feature_notes.domain.models.Note
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

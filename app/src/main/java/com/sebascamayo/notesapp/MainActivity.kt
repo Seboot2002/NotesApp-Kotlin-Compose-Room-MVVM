@@ -2,11 +2,13 @@ package com.sebascamayo.notesapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.sebascamayo.notesapp.features.feature_notes.presentation.notes.NotesScreen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,7 +25,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(1, 1),
+            navigationBarStyle = SystemBarStyle.light(1, 1)
+        )
         setContent {
             NotesAppTheme{
                 Surface(
@@ -66,21 +71,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-
-            /*NotesAppTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = { println("BOTOOOOOOOOOOOOON") }) {
-                            Text("+", fontSize = 24.sp)
-                        }
-                    }
-                ) { innerPadding ->
-                    NotesScreen(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding))
-                }
-            }*/
         }
     }
 }

@@ -2,29 +2,23 @@ package com.sebascamayo.notesapp.features.feature_phrase.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.sebascamayo.notesapp.data.preferences.PhrasePreferences
-import com.sebascamayo.notesapp.features.feature_phrase.data.datasource.remote.dto.PhraseModel
+import com.sebascamayo.notesapp.features.feature_phrase.domain.models.PhraseModel
 import com.sebascamayo.notesapp.features.feature_phrase.domain.use_case.GetPhrase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class PhraseViewModel @Inject constructor(
-    private val phraseUseCase: GetPhrase,
-    private val phrasePreferences: PhrasePreferences
+    private val phraseUseCase: GetPhrase
 ): ViewModel() {
 
     private val _state = MutableStateFlow(PhraseState())
     val state: StateFlow<PhraseState> = _state
-
-    private val gson = Gson()
 
     init {
         loadCachedPhrase()
@@ -33,45 +27,48 @@ class PhraseViewModel @Inject constructor(
 
     private fun loadCachedPhrase() {
         viewModelScope.launch {
-            val cachePhraseJson = phrasePreferences.getPhrase()
-            if (cachePhraseJson != null) {
-                try {
-                    val cachePhrase = gson.fromJson(cachePhraseJson, PhraseModel::class.java)
-                    println("Cargando frase de la cache: $cachePhrase")
+            val cachePhrase: PhraseModel? = phraseUseCase.getCachePhrase()
+            println("Cargando frase de la cache: $cachePhrase")
 
-                    _state.value = state.value.copy(
-                        phrase = cachePhrase.phrase,
-                        author = cachePhrase.author
-                    )
-                } catch (e: Exception) {
-                    println("Error al cargar frase de la cache: ${e.message}")
-                }
+            if (cachePhrase != null) {
+                _state.value = state.value.copy(
+                    phrase = cachePhrase.phrase,
+                    author = cachePhrase.author
+                )
             }
+            else
+            {
+                _state.value = state.value.copy(
+                    isLoading = true
+                )
+            }
+
         }
     }
 
     private fun fetchAndUpdatePhrase() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                _state.value = state.value.copy(
-                    isLoading = true
-                )
+                val newPhrase: PhraseModel? = phraseUseCase().single()
 
-                val remotePhrase: PhraseModel = phraseUseCase().single()
+                if (newPhrase != null && state.value.phrase != newPhrase.phrase) {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
 
-                if (state.value.phrase != remotePhrase.phrase) {
-                    val jsonPhrase = Gson().toJson(remotePhrase)
-                    phrasePreferences.savePhrase(jsonPhrase)
+                    delay(1000)
 
                     _state.value = state.value.copy(
-                        phrase = remotePhrase.phrase,
-                        author = remotePhrase.author,
+                        phrase = newPhrase.phrase,
+                        author = newPhrase.author,
                         isLoading = false
                     )
                 }
                 else
                 {
                     _state.value = state.value.copy(
+                        phrase = newPhrase!!.phrase,
+                        author = newPhrase!!.author,
                         isLoading = false
                     )
                 }

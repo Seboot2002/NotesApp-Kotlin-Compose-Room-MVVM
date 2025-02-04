@@ -1,7 +1,7 @@
 package com.sebascamayo.notesapp.features.feature_notes.domain.use_case
 
-import com.sebascamayo.notesapp.features.feature_notes.domain.model.InvalidNoteException
-import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
+import com.sebascamayo.notesapp.features.feature_notes.domain.models.InvalidNoteException
+import com.sebascamayo.notesapp.features.feature_notes.domain.models.Note
 import com.sebascamayo.notesapp.features.feature_notes.domain.repository.NotesRepository
 
 class AddNote(

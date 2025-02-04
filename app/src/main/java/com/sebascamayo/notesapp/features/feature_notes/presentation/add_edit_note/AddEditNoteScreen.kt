@@ -38,7 +38,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.sebascamayo.notesapp.features.feature_notes.domain.model.Note
+import com.sebascamayo.notesapp.features.feature_notes.domain.models.Note
 import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.components.TransparentHintTextFieldTitle
 import com.sebascamayo.notesapp.features.feature_notes.presentation.add_edit_note.components.TransparentHintTextFieldTitleContent
 import kotlinx.coroutines.flow.collectLatest

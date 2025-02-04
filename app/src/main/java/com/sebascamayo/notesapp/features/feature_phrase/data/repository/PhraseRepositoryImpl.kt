@@ -1,7 +1,9 @@
 package com.sebascamayo.notesapp.features.feature_phrase.data.repository
 
 import com.sebascamayo.notesapp.features.feature_phrase.data.datasource.remote.PhraseApiService
-import com.sebascamayo.notesapp.features.feature_phrase.data.datasource.remote.dto.PhraseModel
+import com.sebascamayo.notesapp.features.feature_phrase.data.datasource.remote.dto.PhraseDto
+import com.sebascamayo.notesapp.features.feature_phrase.data.mapper.toModel
+import com.sebascamayo.notesapp.features.feature_phrase.domain.models.PhraseModel
 import com.sebascamayo.notesapp.features.feature_phrase.domain.repository.PhraseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,12 +17,9 @@ class PhraseRepositoryImpl(
 
         return flow {
             try {
-                val phraseDto: PhraseModel = api.getPhrase()
+                val phraseDto: PhraseDto = api.getPhrase()
 
-                val phraseFlowData = PhraseModel(
-                    phrase = phraseDto.phrase,
-                    author = phraseDto.author
-                )
+                val phraseFlowData = phraseDto.toModel()
                 emit(phraseFlowData)
             } catch (e: IOException) {
                 throw IOException("Error al obtener la frase: ${e.message}", e)
